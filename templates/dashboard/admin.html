@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+
+{% block title %}Admin Dashboard | BursaryHub{% endblock %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+    <div class="px-4 py-6 sm:px-0">
+        <h1 class="text-2xl font-semibold text-slate-900">Administrator Dashboard</h1>
+        <p class="mt-1 text-sm text-slate-600">Overview of all bursary applications and system status.</p>
+
+        <div class="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            <div class="bg-white overflow-hidden shadow rounded-lg border border-slate-200">
+                <div class="p-5">
+                    <div class="flex items-center">
+                        <div class="flex-shrink-0 bg-primary-100 rounded-md p-3">
+                            <i data-lucide="users" class="h-6 w-6 text-primary-600"></i>
+                        </div>
+                        <div class="ml-5 w-0 flex-1">
+                            <dl>
+                                <dt class="text-sm font-medium text-slate-500 truncate">Total Students</dt>
+                                <dd class="text-2xl font-semibold text-slate-900">0</dd>
+                            </dl>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white overflow-hidden shadow rounded-lg border border-slate-200">
+                <div class="p-5">
+                    <div class="flex items-center">
+                        <div class="flex-shrink-0 bg-amber-100 rounded-md p-3">
+                            <i data-lucide="clipboard-list" class="h-6 w-6 text-amber-600"></i>
+                        </div>
+                        <div class="ml-5 w-0 flex-1">
+                            <dl>
+                                <dt class="text-sm font-medium text-slate-500 truncate">Pending Reviews</dt>
+                                <dd class="text-2xl font-semibold text-slate-900">0</dd>
+                            </dl>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white overflow-hidden shadow rounded-lg border border-slate-200">
+                <div class="p-5">
+                    <div class="flex items-center">
+                        <div class="flex-shrink-0 bg-green-100 rounded-md p-3">
+                            <i data-lucide="check-square" class="h-6 w-6 text-green-600"></i>
+                        </div>
+                        <div class="ml-5 w-0 flex-1">
+                            <dl>
+                                <dt class="text-sm font-medium text-slate-500 truncate">Approved Today</dt>
+                                <dd class="text-2xl font-semibold text-slate-900">0</dd>
+                            </dl>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white overflow-hidden shadow rounded-lg border border-slate-200">
+                <div class="p-5">
+                    <div class="flex items-center">
+                        <div class="flex-shrink-0 bg-slate-100 rounded-md p-3">
+                            <i data-lucide="dollar-sign" class="h-6 w-6 text-slate-600"></i>
+                        </div>
+                        <div class="ml-5 w-0 flex-1">
+                            <dl>
+                                <dt class="text-sm font-medium text-slate-500 truncate">Total Disbursed</dt>
+                                <dd class="text-2xl font-semibold text-slate-900">$0</dd>
+                            </dl>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="mt-8 bg-white shadow rounded-lg border border-slate-200 overflow-hidden">
+            <div class="px-4 py-5 sm:px-6 border-b border-slate-200">
+                <h3 class="text-lg leading-6 font-medium text-slate-900">System Overview</h3>
+            </div>
+            <div class="p-6">
+                <div class="flex flex-col items-center justify-center py-10">
+                    <i data-lucide="bar-chart-3" class="h-16 w-16 text-slate-300"></i>
+                    <p class="mt-4 text-slate-500">Analytics and reports will appear here as the system collects data.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

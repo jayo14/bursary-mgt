@@ -8,6 +8,9 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include('accounts.urls')),
     path('dashboard/', include('dashboard.urls')),
+    path('applications/', include('applications.urls')),
+    path('disbursements/', include('disbursements.urls')),
+    path('reports/', include('reports.urls')),
     path('', lambda request: redirect('login')),
 ]
 

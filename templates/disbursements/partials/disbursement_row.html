@@ -1,0 +1,47 @@
+<tr class="text-sm hover:bg-slate-50/50 transition-colors" id="disbursement-{{ disbursement.id }}">
+    <td class="py-4 px-6">
+        <div class="flex items-center">
+            <div class="w-9 h-9 rounded-full bg-slate-100 flex items-center justify-center mr-3 font-bold text-slate-600 text-xs">
+                {{ disbursement.application.student.username|first|upper }}
+            </div>
+            <div>
+                <p class="font-bold text-slate-900">{{ disbursement.application.student.get_full_name|default:disbursement.application.student.username }}</p>
+                <p class="text-[10px] text-slate-400">{{ disbursement.application.student.email }}</p>
+            </div>
+        </div>
+    </td>
+    <td class="py-4 px-6">
+        <span class="font-mono text-xs text-slate-500">#{{ disbursement.application.app_number }}</span>
+    </td>
+    <td class="py-4 px-6">
+        <span class="font-bold text-slate-900">${{ disbursement.amount|floatformat:2|intcomma }}</span>
+    </td>
+    <td class="py-4 px-6">
+        <span class="badge badge-{% if disbursement.status == 'PAID' %}success{% elif disbursement.status == 'PENDING' %}pending{% else %}danger{% endif %}">
+            {{ disbursement.get_status_display }}
+        </span>
+    </td>
+    <td class="py-4 px-6 text-slate-500">
+        {{ disbursement.created_at|date:"M d, Y" }}
+    </td>
+    <td class="py-4 px-6 text-right">
+        {% if disbursement.status == 'PENDING' %}
+        <button class="btn btn-primary py-1 px-3 text-xs" 
+                hx-post="{% url 'disbursement_process' disbursement.id %}"
+                hx-target="#disbursement-{{ disbursement.id }}"
+                hx-swap="outerHTML"
+                hx-confirm="Are you sure you want to process this disbursement? This action cannot be undone.">
+            Pay Student
+        </button>
+        {% else %}
+        <button class="text-slate-400 hover:text-primary-600 transition-colors inline-flex items-center text-xs font-bold">
+            <i data-lucide="receipt-text" class="w-4 h-4 mr-1"></i>
+            View Receipt
+        </button>
+        {% endif %}
+    </td>
+</tr>
+
+<script>
+    lucide.createIcons();
+</script>

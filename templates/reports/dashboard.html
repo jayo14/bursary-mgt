@@ -1,0 +1,123 @@
+{% extends 'dashboard/base.html' %}
+{% load humanize %}
+
+{% block title %}Reports & Analytics | Bursary MGT{% endblock %}
+
+{% block dashboard_content %}
+<div class="mb-8 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+    <div>
+        <h1 class="text-2xl font-bold text-slate-900">Reports & Analytics</h1>
+        <p class="text-slate-500 mt-1">Aggregate bursary performance metrics and historical distribution data.</p>
+    </div>
+    <div class="flex space-x-3">
+        <div class="flex items-center bg-white border border-slate-200 rounded-lg px-3 py-2">
+            <i data-lucide="calendar" class="w-4 h-4 text-slate-400 mr-2"></i>
+            <select class="text-sm font-bold text-slate-700 bg-transparent border-0 focus:ring-0 p-0">
+                <option>Session 2023/2024</option>
+                <option>Session 2022/2023</option>
+            </select>
+        </div>
+    </div>
+</div>
+
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+    <!-- Main Charts -->
+    <div class="lg:col-span-2 space-y-8">
+        <!-- Distribution Chart -->
+        <div class="card">
+            <div class="flex items-center justify-between mb-8">
+                <div>
+                    <h3 class="text-lg font-bold text-slate-900">Funds Distribution</h3>
+                    <p class="text-sm text-slate-500">${{ total_disbursed|floatformat:0|intcomma }} Allocated</p>
+                </div>
+                <div class="p-2 bg-slate-50 rounded-lg">
+                    <i data-lucide="pie-chart" class="w-5 h-5 text-slate-400"></i>
+                </div>
+            </div>
+            
+            <div class="space-y-6">
+                {% for dept in dept_stats|slice:":4" %}
+                <div class="space-y-2">
+                    <div class="flex justify-between text-sm">
+                        <span class="font-medium text-slate-600">{{ dept.department }}</span>
+                        <span class="font-bold text-slate-900">${{ dept.count|multiply:1250|intcomma }}</span>
+                    </div>
+                    <div class="h-2.5 bg-slate-100 rounded-full overflow-hidden">
+                        <div class="h-full bg-primary-500 rounded-full" style="width: {% cycle '85%' '65%' '45%' '25%' %}"></div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- Performance Correlation -->
+        <div class="card">
+            <div class="flex items-center justify-between mb-8">
+                <h3 class="text-lg font-bold text-slate-900">Student Performance vs. Awards</h3>
+                <div class="flex items-center space-x-4">
+                    <div class="flex items-center">
+                        <span class="w-2 h-2 rounded-full bg-primary-500 mr-2"></span>
+                        <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">GPA</span>
+                    </div>
+                    <div class="flex items-center">
+                        <span class="w-2 h-2 rounded-full bg-emerald-500 mr-2"></span>
+                        <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Award Amt</span>
+                    </div>
+                </div>
+            </div>
+            <!-- Placeholder for complex chart -->
+            <div class="h-48 flex items-center justify-center bg-slate-50 border border-dashed border-slate-200 rounded-2xl">
+                <div class="text-center">
+                    <i data-lucide="bar-chart" class="w-8 h-8 text-slate-300 mx-auto mb-2"></i>
+                    <p class="text-xs text-slate-500 italic">Correlation analysis visualization</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Right Stats -->
+    <div class="space-y-8">
+        <div class="card">
+            <p class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-6">Approval Rate</p>
+            <div class="flex flex-col items-center">
+                <div class="relative w-40 h-40 mb-6">
+                    <svg class="w-full h-full transform -rotate-90" viewBox="0 0 36 36">
+                        <circle cx="18" cy="18" r="16" fill="transparent" stroke="#f1f5f9" stroke-width="3"></circle>
+                        <circle cx="18" cy="18" r="16" fill="transparent" stroke="#0ea5e9" stroke-width="3" stroke-dasharray="{{ approval_rate }} 100"></circle>
+                    </svg>
+                    <div class="absolute inset-0 flex flex-col items-center justify-center">
+                        <span class="text-3xl font-bold text-slate-900">{{ approval_rate|floatformat:1 }}%</span>
+                        <span class="text-[10px] font-bold text-slate-400">SUCCESS</span>
+                    </div>
+                </div>
+                <div class="w-full p-4 bg-slate-50 rounded-xl">
+                    <div class="flex justify-between items-center text-xs">
+                        <span class="text-slate-500">Total Approved</span>
+                        <span class="font-bold text-slate-900">{{ approved_count }} Cases</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card bg-primary-900 text-white border-0">
+            <h3 class="font-bold mb-4">Export Options</h3>
+            <div class="space-y-3">
+                <button class="w-full flex items-center justify-between p-3 bg-slate-800 rounded-xl hover:bg-slate-700 transition-colors">
+                    <div class="flex items-center">
+                        <i data-lucide="file-text" class="w-4 h-4 text-primary-400 mr-3"></i>
+                        <span class="text-sm">Summary PDF</span>
+                    </div>
+                    <i data-lucide="download" class="w-4 h-4 text-slate-500"></i>
+                </button>
+                <button class="w-full flex items-center justify-between p-3 bg-slate-800 rounded-xl hover:bg-slate-700 transition-colors">
+                    <div class="flex items-center">
+                        <i data-lucide="table" class="w-4 h-4 text-emerald-400 mr-3"></i>
+                        <span class="text-sm">Full Dataset CSV</span>
+                    </div>
+                    <i data-lucide="download" class="w-4 h-4 text-slate-500"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

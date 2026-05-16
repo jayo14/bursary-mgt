@@ -1,0 +1,85 @@
+<form hx-post="{% url 'apply' %}" hx-target="#wizard-container" hx-encoding="multipart/form-data"
+    class="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
+    {% csrf_token %}
+    <input type="hidden" name="step" value="3">
+
+    <div class="flex items-center space-x-3 mb-6">
+        <div class="p-2 bg-rose-50 rounded-lg text-rose-600">
+            <i data-lucide="upload-cloud" class="w-6 h-6"></i>
+        </div>
+        <div>
+            <h2 class="text-xl font-bold text-slate-900">Document Upload</h2>
+            <p class="text-xs text-slate-500">Step 3 of 4 • Required institutional documentation</p>
+        </div>
+    </div>
+
+    <div class="space-y-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="p-4 bg-slate-50 rounded-xl border border-slate-200">
+                <div class="flex items-center justify-between mb-4">
+                    <span class="text-xs font-bold text-slate-500 uppercase tracking-wider">Required Checklist</span>
+                    <i data-lucide="clipboard-list" class="w-4 h-4 text-slate-400"></i>
+                </div>
+                <ul class="space-y-3">
+                    <li class="flex items-center text-sm">
+                        <i data-lucide="check-circle" class="w-4 h-4 text-emerald-500 mr-2"></i>
+                        <span class="text-slate-700">Proof of Identity (ID/Passport)</span>
+                    </li>
+                    <li class="flex items-center text-sm">
+                        <i data-lucide="check-circle" class="w-4 h-4 text-emerald-500 mr-2"></i>
+                        <span class="text-slate-700">Academic Transcripts</span>
+                    </li>
+                    <li class="flex items-center text-sm">
+                        <i data-lucide="circle" class="w-4 h-4 text-slate-300 mr-2"></i>
+                        <span class="text-slate-700">Proof of Household Income</span>
+                    </li>
+                </ul>
+            </div>
+            <div class="p-4 bg-slate-900 rounded-xl text-white">
+                <p class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Specifications</p>
+                <div class="flex flex-wrap gap-2 mb-4">
+                    <span class="px-2 py-1 bg-slate-800 rounded text-[10px] font-bold">PDF</span>
+                    <span class="px-2 py-1 bg-slate-800 rounded text-[10px] font-bold">JPEG</span>
+                    <span class="px-2 py-1 bg-slate-800 rounded text-[10px] font-bold">PNG</span>
+                </div>
+                <p class="text-xs text-slate-400">Maximum file size: <span class="text-white font-bold">10MB</span> per
+                    document.</p>
+            </div>
+        </div>
+
+        <div class="relative group">
+            <label
+                class="flex flex-col items-center justify-center w-full h-48 border-2 border-dashed border-slate-300 rounded-2xl bg-slate-50 hover:bg-slate-100 hover:border-primary-500 transition-all cursor-pointer">
+                <div class="flex flex-col items-center justify-center pt-5 pb-6">
+                    <i data-lucide="upload"
+                        class="w-10 h-10 text-slate-400 group-hover:text-primary-500 transition-colors mb-3"></i>
+                    <p class="mb-2 text-sm text-slate-700 font-bold">Click or drag to upload</p>
+                    <p class="text-xs text-slate-400 text-center px-8">Ensure your documents are clear and legible
+                        before submitting.</p>
+                </div>
+                <input type="file" name="documents" class="hidden" multiple />
+            </label>
+        </div>
+
+        <div class="p-4 bg-blue-50 rounded-xl flex items-center space-x-3">
+            <i data-lucide="info" class="w-5 h-5 text-blue-600 shrink-0"></i>
+            <p class="text-xs text-blue-800">Your progress is automatically saved as you upload.</p>
+        </div>
+    </div>
+
+    <div class="pt-6 flex justify-between">
+        <button type="button" hx-get="{% url 'apply' %}?step=2" hx-target="#wizard-container" class="btn btn-secondary">
+            <i data-lucide="arrow-left" class="w-4 h-4 mr-2"></i>
+            Back
+        </button>
+        <button type="submit" class="btn btn-primary px-8">
+            Review & Submit
+            <i data-lucide="arrow-right" class="w-4 h-4 ml-2"></i>
+        </button>
+    </div>
+</form>
+
+<script>
+    lucide.createIcons();
+    window.dispatchEvent(new CustomEvent('step-change', { detail: 3 }));
+</script>

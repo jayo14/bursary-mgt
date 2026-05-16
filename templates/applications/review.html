@@ -1,0 +1,219 @@
+{% extends 'dashboard/base.html' %}
+
+{% block title %}Review Application #{{ application.id }} | Bursary MGT{% endblock %}
+
+{% block dashboard_content %}
+<div class="mb-8 flex items-center justify-between">
+    <div class="flex items-center space-x-4">
+        <a href="{% url 'dashboard' %}" class="p-2 bg-white border border-slate-200 rounded-lg text-slate-500 hover:text-slate-900 transition-colors">
+            <i data-lucide="arrow-left" class="w-5 h-5"></i>
+        </a>
+        <div>
+            <nav class="flex mb-1" aria-label="Breadcrumb">
+                <ol class="flex items-center space-x-2 text-xs font-medium text-slate-500">
+                    <li>Applications</li>
+                    <li><i data-lucide="chevron-right" class="w-3 h-3"></i></li>
+                    <li class="text-slate-900">Review</li>
+                </ol>
+            </nav>
+            <h1 class="text-2xl font-bold text-slate-900">Application #{{ application.app_number }}</h1>
+        </div>
+    </div>
+    <div class="flex items-center space-x-3">
+        <span class="badge badge-{{ application.status|lower }}">{{ application.get_status_display }}</span>
+    </div>
+</div>
+
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+    <!-- Left Column: Details -->
+    <div class="lg:col-span-2 space-y-8">
+        <!-- Student Info -->
+        <div class="card">
+            <div class="flex items-start justify-between mb-8">
+                <div class="flex items-center space-x-4">
+                    {% if application.student.profile_picture %}
+                    <img class="h-16 w-16 rounded-2xl border border-slate-200 object-cover" src="{{ application.student.profile_picture.url }}" alt="">
+                    {% else %}
+                    <div class="h-16 w-16 rounded-2xl bg-primary-100 flex items-center justify-center text-primary-700 font-bold text-xl border border-primary-200">
+                        {{ application.student.username|first|upper }}
+                    </div>
+                    {% endif %}
+                    <div>
+                        <h2 class="text-xl font-bold text-slate-900">{{ application.student.get_full_name|default:application.student.username }}</h2>
+                        <div class="flex items-center mt-1 text-sm text-emerald-600 font-medium">
+                            <i data-lucide="verified" class="w-4 h-4 mr-1"></i>
+                            Verified Student
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
+                <div>
+                    <p class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">Matric Number</p>
+                    <p class="text-sm font-semibold text-slate-900">{{ application.matric_number }}</p>
+                </div>
+                <div>
+                    <p class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">Department</p>
+                    <p class="text-sm font-semibold text-slate-900">{{ application.department }}</p>
+                </div>
+                <div>
+                    <p class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">Level</p>
+                    <p class="text-sm font-semibold text-slate-900">{{ application.level }}</p>
+                </div>
+                <div>
+                    <p class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">GPA</p>
+                    <p class="text-sm font-semibold text-slate-900">{{ application.gpa }} / 4.0</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Financial Summary -->
+        <div class="card">
+            <h3 class="text-lg font-bold text-slate-900 mb-6">Financial Summary</h3>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="p-4 bg-slate-50 rounded-xl">
+                    <p class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">Annual Income</p>
+                    <p class="text-lg font-bold text-slate-900">${{ application.annual_income|floatformat:2|intcomma }}</p>
+                </div>
+                <div class="p-4 bg-slate-50 rounded-xl">
+                    <p class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">Household Size</p>
+                    <p class="text-lg font-bold text-slate-900">{{ application.household_size }} Members</p>
+                </div>
+                <div class="p-4 bg-slate-50 rounded-xl">
+                    <p class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">Requested Aid</p>
+                    <p class="text-lg font-bold text-slate-900">$1,200 /mo</p>
+                </div>
+            </div>
+            
+            <div class="mt-8">
+                <p class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">Reason for Applying</p>
+                <div class="p-5 bg-slate-50 rounded-2xl text-sm leading-relaxed text-slate-700 italic border-l-4 border-primary-500">
+                    "{{ application.reason_for_applying }}"
+                </div>
+            </div>
+        </div>
+
+        <!-- Uploaded Documents -->
+        <div class="card">
+            <h3 class="text-lg font-bold text-slate-900 mb-6">Uploaded Documents</h3>
+            <div class="space-y-4">
+                {% for doc in application.documents.all %}
+                <div class="flex items-center justify-between p-4 bg-white border border-slate-200 rounded-xl hover:border-primary-300 transition-colors cursor-pointer group">
+                    <div class="flex items-center space-x-4">
+                        <div class="w-12 h-12 rounded-lg bg-rose-50 flex items-center justify-center text-rose-500">
+                            <i data-lucide="file-text" class="w-6 h-6"></i>
+                        </div>
+                        <div>
+                            <p class="text-sm font-bold text-slate-900 group-hover:text-primary-600 transition-colors">{{ doc.document_type }}.pdf</p>
+                            <p class="text-xs text-slate-500">Uploaded {{ doc.uploaded_at|date:"M d, Y" }} • 2.4 MB</p>
+                        </div>
+                    </div>
+                    <a href="{{ doc.file.url }}" target="_blank" class="p-2 text-slate-400 hover:text-primary-600 transition-colors">
+                        <i data-lucide="external-link" class="w-5 h-5"></i>
+                    </a>
+                </div>
+                {% empty %}
+                <p class="text-sm text-slate-500">No documents uploaded.</p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Right Column: Actions -->
+    <div class="space-y-8">
+        <!-- Review Action -->
+        <div class="card border-primary-100 ring-4 ring-primary-50/50">
+            <h3 class="text-lg font-bold text-slate-900 mb-6">Review Decision</h3>
+            <form hx-post="{% url 'application_review' application.id %}" hx-swap="outerHTML" hx-indicator="#loading" class="space-y-6">
+                {% csrf_token %}
+                <div class="space-y-3">
+                    <p class="text-xs font-bold text-slate-400 uppercase tracking-wider">Decision</p>
+                    <div class="grid grid-cols-2 gap-3" x-data="{ selected: '' }">
+                        <label class="relative flex flex-col items-center justify-center p-3 border-2 rounded-xl cursor-pointer transition-all h-24"
+                               :class="selected === 'APPROVED' ? 'border-emerald-500 bg-emerald-50' : 'border-slate-100 hover:border-slate-200 bg-slate-50'">
+                            <input type="radio" name="decision" value="APPROVED" class="sr-only" x-model="selected">
+                            <i data-lucide="check-circle" class="w-6 h-6 mb-1" :class="selected === 'APPROVED' ? 'text-emerald-600' : 'text-slate-400'"></i>
+                            <span class="text-xs font-bold" :class="selected === 'APPROVED' ? 'text-emerald-700' : 'text-slate-600'">Approve</span>
+                        </label>
+                        <label class="relative flex flex-col items-center justify-center p-3 border-2 rounded-xl cursor-pointer transition-all h-24"
+                               :class="selected === 'REJECTED' ? 'border-rose-500 bg-rose-50' : 'border-slate-100 hover:border-slate-200 bg-slate-50'">
+                            <input type="radio" name="decision" value="REJECTED" class="sr-only" x-model="selected">
+                            <i data-lucide="x-circle" class="w-6 h-6 mb-1" :class="selected === 'REJECTED' ? 'text-rose-600' : 'text-slate-400'"></i>
+                            <span class="text-xs font-bold" :class="selected === 'REJECTED' ? 'text-rose-700' : 'text-slate-600'">Reject</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="space-y-3">
+                    <p class="text-xs font-bold text-slate-400 uppercase tracking-wider">Reviewer Comments</p>
+                    <textarea name="comments" rows="4" class="input-field" placeholder="Add your feedback here..."></textarea>
+                </div>
+
+                <button type="submit" class="btn btn-primary w-full py-3">
+                    Submit Final Decision
+                    <div id="loading" class="htmx-indicator ml-2">
+                        <i data-lucide="loader-2" class="w-4 h-4 animate-spin"></i>
+                    </div>
+                </button>
+            </form>
+        </div>
+
+        <!-- Budget / Info -->
+        <div class="card bg-slate-900 text-white border-0">
+            <div class="flex items-center justify-between mb-6">
+                <div class="p-3 bg-slate-800 rounded-xl text-primary-400">
+                    <i data-lucide="wallet" class="w-6 h-6"></i>
+                </div>
+                <div class="text-right">
+                    <p class="text-xs font-bold text-slate-400 uppercase tracking-wider">Available Budget</p>
+                    <p class="text-xl font-bold">$142,500.00</p>
+                </div>
+            </div>
+            <div class="space-y-2">
+                <div class="flex justify-between text-xs font-bold">
+                    <span class="text-slate-400">Current Round Remaining</span>
+                    <span class="text-primary-400">65% left</span>
+                </div>
+                <div class="h-2 bg-slate-800 rounded-full overflow-hidden">
+                    <div class="h-full bg-primary-500" style="width: 65%"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Process Status -->
+        <div class="card">
+            <h3 class="text-lg font-bold text-slate-900 mb-6">Process Status</h3>
+            <div class="space-y-6">
+                <div class="flex items-start space-x-4">
+                    <div class="w-6 h-6 rounded-full bg-emerald-500 flex items-center justify-center shrink-0 mt-1">
+                        <i data-lucide="check" class="w-3 h-3 text-white"></i>
+                    </div>
+                    <div>
+                        <p class="text-sm font-bold text-slate-900">Submitted</p>
+                        <p class="text-xs text-slate-500">Oct 15, 2023 • 09:42 AM</p>
+                    </div>
+                </div>
+                <div class="flex items-start space-x-4">
+                    <div class="w-6 h-6 rounded-full bg-primary-500 flex items-center justify-center shrink-0 mt-1">
+                        <i data-lucide="refresh-cw" class="w-3 h-3 text-white animate-spin-slow"></i>
+                    </div>
+                    <div>
+                        <p class="text-sm font-bold text-slate-900">In Review</p>
+                        <p class="text-xs text-slate-500">Currently with Admin Reviewer</p>
+                    </div>
+                </div>
+                <div class="flex items-start space-x-4 opacity-50">
+                    <div class="w-6 h-6 rounded-full bg-slate-200 flex items-center justify-center shrink-0 mt-1">
+                        <i data-lucide="banknote" class="w-3 h-3 text-white"></i>
+                    </div>
+                    <div>
+                        <p class="text-sm font-bold text-slate-900">Disbursement</p>
+                        <p class="text-xs text-slate-500">Pending Approval</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

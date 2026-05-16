@@ -1,0 +1,56 @@
+<form hx-post="{% url 'apply' %}" hx-target="#wizard-container" class="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
+    {% csrf_token %}
+    <input type="hidden" name="step" value="2">
+    
+    <div class="flex items-center space-x-3 mb-6">
+        <div class="p-2 bg-amber-50 rounded-lg text-amber-600">
+            <i data-lucide="wallet" class="w-6 h-6"></i>
+        </div>
+        <div>
+            <h2 class="text-xl font-bold text-slate-900">Financial Information</h2>
+            <p class="text-xs text-slate-500">Household financial status and justification</p>
+        </div>
+    </div>
+
+    <div class="p-4 bg-primary-50 rounded-xl flex items-start space-x-4 mb-8">
+        <i data-lucide="lightbulb" class="w-5 h-5 text-primary-600 shrink-0 mt-0.5"></i>
+        <p class="text-xs text-primary-800 leading-relaxed">
+            <span class="font-bold">Financial Tip:</span> Include all sources of income, including secondary jobs or household contributions, to ensure accuracy.
+        </p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="space-y-2">
+            <label class="text-sm font-bold text-slate-700">Annual Household Income</label>
+            <div class="relative">
+                <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400 font-bold">$</span>
+                <input type="number" name="annual_income" required class="input-field pl-8" placeholder="0.00">
+            </div>
+        </div>
+        <div class="space-y-2">
+            <label class="text-sm font-bold text-slate-700">Household Size</label>
+            <input type="number" name="household_size" required class="input-field" placeholder="Number of members">
+        </div>
+        <div class="md:col-span-2 space-y-2">
+            <label class="text-sm font-bold text-slate-700">Reason for Applying</label>
+            <textarea name="reason_for_applying" rows="4" required class="input-field" placeholder="Provide a brief explanation of your financial need..."></textarea>
+            <p class="text-[10px] text-slate-400 text-right">Maximum 500 words</p>
+        </div>
+    </div>
+
+    <div class="pt-6 flex justify-between">
+        <button type="button" hx-get="{% url 'apply' %}?step=1" hx-target="#wizard-container" class="btn btn-secondary">
+            <i data-lucide="arrow-left" class="w-4 h-4 mr-2"></i>
+            Back
+        </button>
+        <button type="submit" class="btn btn-primary px-8">
+            Continue to Document Upload
+            <i data-lucide="arrow-right" class="w-4 h-4 ml-2"></i>
+        </button>
+    </div>
+</form>
+
+<script>
+    lucide.createIcons();
+    window.dispatchEvent(new CustomEvent('step-change', { detail: 2 }));
+</script>

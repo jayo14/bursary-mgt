@@ -1,0 +1,37 @@
+<div class="flex flex-col items-center justify-center py-12 text-center animate-in zoom-in duration-500">
+    <div class="w-20 h-20 bg-emerald-100 rounded-full flex items-center justify-center text-emerald-600 mb-8">
+        <i data-lucide="check" class="w-10 h-10 stroke-[3]"></i>
+    </div>
+    
+    <h2 class="text-3xl font-bold text-slate-900 mb-4">Application Submitted!</h2>
+    <p class="text-slate-500 max-w-md mx-auto mb-10">
+        Your application <span class="font-bold text-slate-900">#{{ application.app_number }}</span> has been successfully received and is now in the evaluation phase.
+    </p>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 w-full max-w-lg mb-10">
+        <div class="card p-4 bg-slate-50/50 border-slate-100 shadow-none text-left">
+            <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Application ID</p>
+            <p class="text-sm font-bold text-slate-900">{{ application.app_number }}</p>
+        </div>
+        <div class="card p-4 bg-slate-50/50 border-slate-100 shadow-none text-left">
+            <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Expected Review</p>
+            <p class="text-sm font-bold text-slate-900">14-21 Business Days</p>
+        </div>
+    </div>
+
+    <div class="flex flex-col sm:flex-row items-center space-y-3 sm:space-y-0 sm:space-x-4">
+        <a href="{% url 'dashboard' %}" class="btn btn-primary px-8 py-3">
+            Go to Dashboard
+            <i data-lucide="layout-dashboard" class="w-4 h-4 ml-2"></i>
+        </a>
+        <button onclick="window.print()" class="btn btn-secondary px-8 py-3">
+            <i data-lucide="printer" class="w-4 h-4 mr-2"></i>
+            Print Receipt
+        </button>
+    </div>
+</div>
+
+<script>
+    lucide.createIcons();
+    window.dispatchEvent(new CustomEvent('step-change', { detail: 4 }));
+</script>

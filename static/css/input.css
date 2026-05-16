@@ -10,16 +10,41 @@
 }
 
 @layer components {
+  .card {
+    @apply bg-white border border-slate-200 rounded-xl shadow-soft p-6;
+  }
+  
   .btn {
-    @apply inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 transition-all duration-200;
+    @apply inline-flex items-center justify-center px-4 py-2 text-sm font-medium rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2;
   }
+  
   .btn-primary {
-    @apply text-white bg-primary-600 hover:bg-primary-700 focus:ring-primary-500;
+    @apply bg-primary-600 text-white hover:bg-primary-700 focus:ring-primary-500 shadow-sm;
   }
+  
   .btn-secondary {
-    @apply text-primary-700 bg-primary-100 hover:bg-primary-200 focus:ring-primary-500;
+    @apply bg-white text-slate-700 border border-slate-200 hover:bg-slate-50 focus:ring-slate-500 shadow-sm;
   }
+  
   .input-field {
-    @apply block w-full px-3 py-2 border border-slate-300 rounded-md shadow-sm placeholder-slate-400 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm;
+    @apply block w-full px-3 py-2 bg-white border border-slate-300 rounded-lg text-sm placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all;
   }
+  
+  .badge {
+    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium;
+  }
+  
+  .badge-pending { @apply bg-amber-100 text-amber-800; }
+  .badge-success { @apply bg-emerald-100 text-emerald-800; }
+  .badge-danger { @apply bg-rose-100 text-rose-800; }
+  .badge-info { @apply bg-blue-100 text-blue-800; }
+}
+
+/* Custom transitions for HTMX */
+.htmx-settling {
+  opacity: 0;
+}
+.htmx-request {
+  opacity: 0.5;
+  transition: opacity 200ms ease-in;
 }

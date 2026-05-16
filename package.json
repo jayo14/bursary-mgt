@@ -16,5 +16,9 @@
   "bugs": {
     "url": "https://github.com/jayo14/bursary-mgt/issues"
   },
-  "homepage": "https://github.com/jayo14/bursary-mgt#readme"
+  "homepage": "https://github.com/jayo14/bursary-mgt#readme",
+  "dependencies": {
+    "@tailwindcss/forms": "^0.5.11",
+    "tailwindcss": "^4.3.0"
+  }
 }

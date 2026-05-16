@@ -3,3 +3,5 @@ dj-database-url
 django-htmx
 pillow
 python-dotenv
+gunicorn
+whitenoise[brotli]

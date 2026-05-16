@@ -1,8 +1,37 @@
-from django.views.generic import ListView, DetailView, UpdateView
+from django.views.generic import ListView, DetailView, UpdateView, CreateView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.contrib.auth.views import LoginView
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import User
 from django.db.models import Q
+from django.urls import reverse_lazy
+from django.contrib.auth.forms import UserCreationForm
+from django import forms
+
+class UserLoginView(LoginView):
+    template_name = 'accounts/login.html'
+    redirect_authenticated_user = True
+    
+    def get_success_url(self):
+        return reverse_lazy('dashboard')
+
+class StudentSignupForm(UserCreationForm):
+    class Meta(UserCreationForm.Meta):
+        model = User
+        fields = ('username', 'email', 'first_name', 'last_name')
+
+    def save(self, commit=True):
+        user = super().save(commit=False)
+        user.role = User.Role.STUDENT
+        if commit:
+            user.save()
+        return user
+
+class StudentSignupView(CreateView):
+    model = User
+    form_class = StudentSignupForm
+    template_name = 'accounts/signup.html'
+    success_url = reverse_lazy('login')
 
 class UserListView(LoginRequiredMixin, UserPassesTestMixin, ListView):
     model = User

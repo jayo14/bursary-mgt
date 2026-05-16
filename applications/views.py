@@ -24,7 +24,7 @@ class ApplicationReviewView(LoginRequiredMixin, UserPassesTestMixin, DetailView)
         return self.request.user.role in ['ADMIN', 'REVIEWER']
 
     def post(self, request, *args, **kwargs):
-        application = self.get_object_name()
+        application = self.get_object()
         decision = request.POST.get('decision')
         comments = request.POST.get('comments')
         
